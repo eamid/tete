@@ -46,7 +46,7 @@ function Y = tete(triplets, t, no_dims, Yinit, labels)
     end
 
     % Initialize some variables
-    if ~exist('Xinit', 'var') || isempty(Yinit)
+    if ~exist('Yinit', 'var') || isempty(Yinit)
         Yinit = randn(N, no_dims) .* .0001;
     end
     Y = Yinit;
