@@ -48,27 +48,23 @@ gradY = zeros(N, no_dims);
 if t == 1
     ratio = 1./(1 + 1./loss);
 
-    gradY1 =  2 * bsxfun(@times, Y(id1,:) - Y(id2,:), K(sub2ind([N,N],id1,id2)))...
-            - 2 * bsxfun(@times, Y(id1,:) - Y(id3,:), K(sub2ind([N,N],id1,id3)));
-    gradY1 =  bsxfun(@times, gradY1, ratio);
-
-    gradY2 = -2 * bsxfun(@times, Y(id1,:) - Y(id2,:), K(sub2ind([N,N],id1,id2)));
+    gradY2 = -2 * (Y(id1,:) - Y(id2,:));
     gradY2 =  bsxfun(@times, gradY2, ratio);
 
-    gradY3 =  2 * bsxfun(@times, Y(id1,:) - Y(id3,:), K(sub2ind([N,N],id1,id3)));
+    gradY3 =  2 * (Y(id1,:) - Y(id3,:));
     gradY3 =      bsxfun(@times, gradY3, ratio);
+    
+    gradY1 =  -gradY2 - gradY3;
 else
     ratio = 1./(1 + 1./loss).^t ./ K(sub2ind([N,N],id1,id2)).^2;
-
-    gradY1 =  2 * bsxfun(@times, Y(id1,:) - Y(id2,:), K(sub2ind([N,N],id1,id3)))...
-            - 2 * bsxfun(@times, Y(id1,:) - Y(id3,:), K(sub2ind([N,N],id1,id2)));
-    gradY1 =  bsxfun(@times, gradY1, ratio);
 
     gradY2 = -2 * bsxfun(@times, Y(id1,:) - Y(id2,:), K(sub2ind([N,N],id1,id3)));
     gradY2 =  bsxfun(@times, gradY2, ratio);
 
     gradY3 =  2 * bsxfun(@times, Y(id1,:) - Y(id3,:), K(sub2ind([N,N],id1,id2)));
     gradY3 =      bsxfun(@times, gradY3, ratio);
+    
+    gradY1 =  -gradY2 - gradY3;
 end
 
 for d = 1:no_dims
